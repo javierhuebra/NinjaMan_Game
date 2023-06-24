@@ -329,7 +329,7 @@
 			drawFantasmas(fantasma2, 8, 19)
 			drawFantasmas(fantasma3, 5, 19)
 			vidas--
-
+			reproducirSonido('sounds/ouch.mp3', false, 0.5, 0.4)
 			document.getElementById('vidas').textContent = `${vidas}`
 
 		}
@@ -337,6 +337,7 @@
 		if (vidas <= 0) {
 			console.log("juego terminado")
 			document.getElementById('fin-juego').classList.remove('hidden')
+			reproducirSonido('sounds/gameover.mp3', false, 0, 0.1)
 			return
 		}
 
@@ -373,7 +374,19 @@
 		fantasma.style.left = `${x * 40}px`
 	}
 
+	const reproducirSonido = (ruta, pausar, adelantar, volumen) => {
+		let audio = new Audio(ruta)
+		audio.volume = volumen
+		audio.currentTime = adelantar;
+		audio.play()
 
+		if (pausar) {
+			setTimeout(function () {
+				audio.pause();
+			}, 500);
+		}
+
+	}
 
 	drawNinjaMan()
 
@@ -409,16 +422,20 @@
 			//Puntaje de cuantas piezas de sushi come ninjaman
 			if (world[ninjaman.y][ninjaman.x] == 2) {
 				puntaje += 10
+				reproducirSonido('sounds/sushi.mp3', false, 0, 0.4)
 			}
 
 			if (world[ninjaman.y][ninjaman.x] == 3) {
 				puntaje += 20
+				reproducirSonido('sounds/onigiri.mp3', false, 0, 0.4)
 			}
 			if (world[ninjaman.y][ninjaman.x] == 4) {
 				puntaje += 50
+				reproducirSonido('sounds/campanita.mp3', false, 2, 0.2)
 			}
 		}
 
+		reproducirSonido('sounds/camina.mp3', true, 0.15, 0.05)
 
 		world[ninjaman.y][ninjaman.x] = 0
 		drawNinjaMan()
